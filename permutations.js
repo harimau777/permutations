@@ -53,8 +53,10 @@ function _cartesianProductObj(optObj){
  * // => [["m","h"],["m","i"],["e","h"],["e","i"]]
  */
 function product(opts){
-    if (arguments.length===1 && (!_.isArray(opts)))
+    if (arguments.length===1 && !_.isArray(opts))
         return _cartesianProductObj(opts)
+    else if (arguments.length===1)
+        return _cartesianProductOf(opts)
     else
         return _cartesianProductOf(arguments)
 }
