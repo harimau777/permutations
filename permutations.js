@@ -1,5 +1,5 @@
 
-import _ from 'lodash'
+var _ = require('lodash')
 
 /**
  * Generate all combination of arguments when given arrays or strings
@@ -52,14 +52,58 @@ function _cartesianProductObj(optObj){
  * product(['me','hi'])
  * // => [["m","h"],["m","i"],["e","h"],["e","i"]]
  */
-export function product(opts){
-    if (arguments.length==1 && !_.isArray(opts))
+function product(opts){
+    if (arguments.length===1 && (!_.isArray(opts)))
         return _cartesianProductObj(opts)
     else
-        return _cartesianProductOf(opts)
+        return _cartesianProductOf(arguments)
 }
+
+/**
+ * Generate permutations
+ * @example
+ *
+ * permutations([1,2,3],2)
+ * // => [[1,1],[1,2],[1,3],[2,1],[2,2],[2,3],[3,1],[3,2],[3,3]]
+ *
+ * permutations('cat',2)
+ * // => [["c","c"],["c","a"],["c","t"],["a","c"],["a","a"],["a","t"],["t","c"],["t","a"],["t","t"]]
+ */
+function permutations(obj, n){
+    if (typeof obj=='string') obj = _.toArray(obj)
+    n = n?n:obj.length
+    // make n copies of keys
+    for (var j = 0, nInds=[]; j < n; j++) {nInds.push(_.keys(obj)) }
+    return _.map(product(nInds),indices=>_.map(indices,i=>obj[i]))
+}
+
+
+
+/**
+ * Generate combinations of an object
+ * @example
+ *
+ * combinations([0,1,2,3],2)
+ * // => [[0,0],[0,1],[0,2],[0,3],[1,1],[1,2],[1,3],[2,2],[2,3],[3,3]]
+ */
+function combinations(obj,n){
+    function isSorted(arr) {
+        return _.every(arr, function (value, index, array) {
+            return index === 0 || String(array[index - 1]) <= String(value);
+        });
+    }
+    // array with n copies of the keys of obj
+    return _(permutations(_.keys(obj),n))
+        .filter(isSorted)
+        .map(indices=>_.map(indices,i=>obj[i]))
+        .value()
+}
+
 
 // product('me','hi')
 // product({who:['me','you'],say:['hi','by']})
-// product({who:['me','you'],say:['hi','by']})
+// product(['me','you'],['hi','by'])
 // product(['me','hi'])
+// combinations([0,1,2,3],2)
+// permutations([1,2,3],2)
+// permutations('cat',2)
