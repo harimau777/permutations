@@ -22,8 +22,8 @@ function _cartesianProductOf(args) {
 }
 
 /** Generate all combination of arguments from objects
-  * @param {Object} opts    - An object or arrays with keys describing options  {firstName:['Ben','Jade','Darren'],lastName:['Smith','Miller']}
-  * @returns {Array}        - An array of objects e.g. [{firstName:'Ben',LastName:'Smith'},{..]
+  *  {Object} opts    - An object or arrays with keys describing options  {firstName:['Ben','Jade','Darren'],lastName:['Smith','Miller']}
+  *  {Array}        - An array of objects e.g. [{firstName:'Ben',LastName:'Smith'},{..]
   **/
 function _cartesianProductObj(optObj){
     var keys = _.keys(optObj);
@@ -37,7 +37,7 @@ function _cartesianProductObj(optObj){
 /**
  * Generate the cartesian product of input objects, arrays, or strings
  *
- * @example
+ * 
  *
  * product('me','hi')
  * // => [["m","h"],["m","i"],["e","h"],["e","i"]]
@@ -63,7 +63,7 @@ function product(opts){
 
 /**
  * Generate permutations
- * @example
+ * 
  *
  * permutations([1,2,3],2)
  * // => [[1,1],[1,2],[1,3],[2,1],[2,2],[2,3],[3,1],[3,2],[3,3]]
@@ -83,7 +83,7 @@ function permutations(obj, n){
 
 /**
  * Generate combinations of an object
- * @example
+ * 
  *
  * combinations([0,1,2,3],2)
  * // => [[0,0],[0,1],[0,2],[0,3],[1,1],[1,2],[1,3],[2,2],[2,3],[3,3]]
