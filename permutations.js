@@ -1,4 +1,7 @@
-
+/**
+ * Lodash mixins for combinatorics
+ * Inspired by python itertools: https://docs.python.org/2.7/library/itertools.html
+ */
 var _ = require('lodash')
 
 /**
@@ -37,7 +40,6 @@ function _cartesianProductObj(optObj){
 /**
  * Generate the cartesian product of input objects, arrays, or strings
  *
- * 
  *
  * product('me','hi')
  * // => [["m","h"],["m","i"],["e","h"],["e","i"]]
@@ -62,33 +64,36 @@ function product(opts){
 }
 
 /**
- * Generate permutations
- * 
+ * Generate permutations, in all possible orderings, with no repeat values
+ *
  *
  * permutations([1,2,3],2)
- * // => [[1,1],[1,2],[1,3],[2,1],[2,2],[2,3],[3,1],[3,2],[3,3]]
+ * // => [[1,2],[1,3],[2,1],[2,3],[3,1],[3,2]
  *
  * permutations('cat',2)
- * // => [["c","c"],["c","a"],["c","t"],["a","c"],["a","a"],["a","t"],["t","c"],["t","a"],["t","t"]]
+ * // => [["c","a"],["c","t"],["a","c"],["a","t"],["t","c"],["t","a"]]
  */
 function permutations(obj, n){
     if (typeof obj=='string') obj = _.toArray(obj)
     n = n?n:obj.length
-    // make n copies of keys
+    // make n copies of keys/indices
     for (var j = 0, nInds=[]; j < n; j++) {nInds.push(_.keys(obj)) }
-    return _.map(product(nInds),indices=>_.map(indices,i=>obj[i]))
+    // get product of the indices, then filter to remove the same key twice
+    var arrangements = product(nInds).filter(pair=>pair[0]!==pair[1])
+    return _.map(arrangements,indices=>_.map(indices,i=>obj[i]))
 }
 
 
 
 /**
- * Generate combinations of an object
- * 
+ * Generate n combinations of an object with no repeat values in each combination.
+ *
  *
  * combinations([0,1,2,3],2)
- * // => [[0,0],[0,1],[0,2],[0,3],[1,1],[1,2],[1,3],[2,2],[2,3],[3,3]]
+ * // => [[0,1],[0,2],[0,3],[1,2],[1,3],[2,3]]
  */
 function combinations(obj,n){
+    /* filter out keys out of order, e.g. [0,1] is ok but [1,0] isn't */
     function isSorted(arr) {
         return _.every(arr, function (value, index, array) {
             return index === 0 || String(array[index - 1]) <= String(value);
@@ -101,6 +106,24 @@ function combinations(obj,n){
         .value()
 }
 
+/**
+ * Generate n combinations with repeat values.
+ *
+ *
+ * combinations_with_replacement([0,1,2,3],2)
+ * // => [[0,0],[0,1],[0,2],[0,3],[1,1],[1,2],[1,3],[2,2],[2,3],[3,3]]
+ */
+function combinations_with_replacement(obj,n){
+    if (typeof obj=='string') obj = _.toArray(obj)
+    n = n?n:obj.length
+    // make n copies of keys/indices
+    for (var j = 0, nInds=[]; j < n; j++) {nInds.push(_.keys(obj)) }
+    // get product of the indices, then filter to keep elements in order
+    var arrangements = product(nInds).filter(pair=>pair[0]<=pair[1])
+    return _.map(arrangements,indices=>_.map(indices,i=>obj[i]))
+}
+
+module.exports={combinations_with_replacement,combinations,product,permutations}
 
 // product('me','hi')
 // product({who:['me','you'],say:['hi','by']})

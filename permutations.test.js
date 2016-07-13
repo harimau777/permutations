@@ -1,6 +1,6 @@
 // mocha unit tests
 import {expect} from 'chai'
-import {combinations,product,permutations} from './products'
+import {combinations,product,permutations,combinations_with_replacement} from './products'
 
 describe('products', function () {
     describe('product', function () {
@@ -23,16 +23,22 @@ describe('products', function () {
     })
     describe('combinations', function () {
         it('should work for test data', function () {
-            expect(combinations([1,2,3],2)).eql([[1,1],[1,2],[1,3],[2,2],[2,3],[3,3]])
+            expect(combinations([1,2,3],2)).eql([[1,2],[1,3],[2,3]])
+        });
+    })
+
+    describe('combinations_with_replacement', function () {
+        it('should work for test data', function () {
+            expect(combinations_with_replacement([1,2,3],2)).eql([[1,1],[1,2],[1,3],[2,2],[2,3],[3,3]])
         });
     })
 
     describe('permutations', function () {
         it('should work for test data', function () {
             expect(permutations([1,2,3],2))
-                .eql([[1,1],[1,2],[1,3],[2,1],[2,2],[2,3],[3,1],[3,2],[3,3]])
+                .eql([[1,2],[1,3],[2,1],[2,3],[3,1],[3,2]])
             expect(permutations('cat',2))
-                .eql([["c","c"],["c","a"],["c","t"],["a","c"],["a","a"],["a","t"],["t","c"],["t","a"],["t","t"]])
+                .eql([["c","a"],["c","t"],["a","c"],["a","t"],["t","c"],["t","a"]])
         });
 
     })
