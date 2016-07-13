@@ -1,6 +1,21 @@
 /**
  * Lodash mixins for combinatorics
  * Inspired by python itertools: https://docs.python.org/2.7/library/itertools.html
+ *
+ * Usage:
+ *   permutations([0,1,2],2)                 // [[0,1],[0,2],[1,0],[1,2],[2,0],[2,1]]
+ *   combinations([0,1,2],2)                 // [[0,1],[0,2],[1,2]]
+ *   combinations_with_replacement([0,1,2],2)// [[0,0],[0,1],[0,2],[1,1],[1,2],[2,2]]
+ *   product([0,1,2],[0,1,2])                // [[0,0],[0,1],[0,2],[1,0],[1,1],[1,2],[2,0],[2,1],[2,2]]
+ *
+ * Multiple input types:
+ *   product('me','hi')
+ *   product({who:['me','you'],say:['hi','by']})
+ *   product(['me','you'],['hi','by'])
+ *   product(['me','hi'])
+ *   combinations([0,1,2,3],2)
+ *   permutations([1,2,3],2)
+ *   permutations('cat',2)
  */
 var _ = require('lodash')
 
@@ -124,11 +139,3 @@ function combinations_with_replacement(obj,n){
 }
 
 module.exports={combinations_with_replacement,combinations,product,permutations}
-
-// product('me','hi')
-// product({who:['me','you'],say:['hi','by']})
-// product(['me','you'],['hi','by'])
-// product(['me','hi'])
-// combinations([0,1,2,3],2)
-// permutations([1,2,3],2)
-// permutations('cat',2)
